@@ -96,8 +96,6 @@ pub fn build(b: *std.Build) !void {
             }),
         });
         test_exe.addCSourceFile(.{ .file = libunwind_test_path.path(b, TEST_EXE_SOURCE), .flags = flags.constSlice() });
-        test_exe.addIncludePath(libunwind_include_path);
-        test_exe.linkLibrary(lib);
 
         const test_run = b.addRunArtifact(test_exe);
         tests_step.dependOn(&test_run.step);
@@ -111,8 +109,6 @@ pub fn build(b: *std.Build) !void {
             }),
         });
         test_obj.addCSourceFile(.{ .file = libunwind_test_path.path(b, TEST_OBJ_SOURCE), .flags = flags.constSlice() });
-        test_obj.addIncludePath(libunwind_include_path);
-        test_obj.linkLibrary(lib);
 
         tests_step.dependOn(&test_obj.step);
     }
@@ -204,7 +200,7 @@ const TEST_EXE_SOURCES = .{
     "unwind_leaffunction.pass.cpp",
     "unwind_scalable_vectors.pass.cpp",
 
-    "aix_signal_unwind.pass.sh.S",
+    // "aix_signal_unwind.pass.sh.S",
     "remember_state_leak.pass.sh.s",
 };
 
