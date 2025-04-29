@@ -1,7 +1,6 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) !void {
-    const install_step = b.getInstallStep();
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
@@ -130,7 +129,6 @@ pub fn build(b: *std.Build) !void {
         .check = true,
     });
     fmt_step.dependOn(&fmt.step);
-    install_step.dependOn(fmt_step);
 }
 
 const INCLUDE_HEADERS = .{
