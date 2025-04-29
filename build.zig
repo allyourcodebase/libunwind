@@ -39,6 +39,7 @@ pub fn build(b: *std.Build) !void {
         .version = version,
         .root_module = b.createModule(.{
             .target = target,
+            .link_libc = true,
             .optimize = optimize,
         }),
         .linkage = linkage,
