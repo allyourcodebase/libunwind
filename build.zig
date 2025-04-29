@@ -93,9 +93,12 @@ pub fn build(b: *std.Build) !void {
             .version = version,
             .root_module = b.createModule(.{
                 .target = target,
+                .link_libc = true,
             }),
         });
         test_exe.addCSourceFile(.{ .file = libunwind_test_path.path(b, TEST_EXE_SOURCE), .flags = flags.constSlice() });
+        test_exe.addIncludePath(libunwind_include_path);
+        test_exe.linkLibrary(lib);
 
         const test_run = b.addRunArtifact(test_exe);
         tests_step.dependOn(&test_run.step);
@@ -106,14 +109,15 @@ pub fn build(b: *std.Build) !void {
             .name = std.fs.path.stem(TEST_OBJ_SOURCE),
             .root_module = b.createModule(.{
                 .target = target,
+                .link_libc = true,
             }),
         });
         test_obj.addCSourceFile(.{ .file = libunwind_test_path.path(b, TEST_OBJ_SOURCE), .flags = flags.constSlice() });
+        test_obj.addIncludePath(libunwind_include_path);
+        test_obj.linkLibrary(lib);
 
         tests_step.dependOn(&test_obj.step);
     }
-
-    install_step.dependOn(tests_step);
 
     // Formatting check
     const fmt_step = b.step("fmt", "Check formatting");
